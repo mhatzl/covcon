@@ -30,7 +30,7 @@ pub struct Coverage {
 }
 
 impl TryFrom<&str> for Coverage {
-    type Error = Box<dyn core::error::Error>;
+    type Error = Box<dyn core::error::Error + Send + Sync + 'static>;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         Ok(quick_xml::de::from_str::<Coverage>(value)?)

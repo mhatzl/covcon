@@ -1,6 +1,8 @@
 use crate::{cfg::ConversionConfig, cobertura};
 
-pub fn convert(cfg: &ConversionConfig) -> Result<String, Box<dyn core::error::Error>> {
+pub fn convert(
+    cfg: &ConversionConfig,
+) -> Result<String, Box<dyn core::error::Error + Send + Sync + 'static>> {
     match (&cfg.in_fmt, &cfg.in_data_fmt) {
         (crate::format::CoverageFormat::CoberturaV4, crate::cfg::DataFormat::Xml) => {
             let coverage = cobertura::schema::Coverage::try_from(cfg.in_content.as_str())?;
@@ -8,7 +10,7 @@ pub fn convert(cfg: &ConversionConfig) -> Result<String, Box<dyn core::error::Er
             match (&cfg.out_fmt, &cfg.out_data_fmt) {
                 (crate::format::CoverageFormat::CoberturaV4, crate::cfg::DataFormat::Xml) => {
                     // nothing to convert
-                    Ok::<String, Box<dyn core::error::Error>>(cfg.in_content.clone())
+                    Ok(cfg.in_content.clone())
                 }
                 (crate::format::CoverageFormat::CoberturaV4, crate::cfg::DataFormat::Json) => {
                     let json_cov = crate::cobertura::no_xml::Coverage::from(coverage);
@@ -40,7 +42,7 @@ pub fn convert(cfg: &ConversionConfig) -> Result<String, Box<dyn core::error::Er
 
 pub fn convert_to_json(
     cfg: &ConversionConfig,
-) -> Result<serde_json::Value, Box<dyn core::error::Error>> {
+) -> Result<serde_json::Value, Box<dyn core::error::Error + Send + Sync + 'static>> {
     match (&cfg.in_fmt, &cfg.in_data_fmt) {
         (crate::format::CoverageFormat::CoberturaV4, crate::cfg::DataFormat::Xml) => {
             let coverage = cobertura::schema::Coverage::try_from(cfg.in_content.as_str())?;

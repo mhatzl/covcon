@@ -3,7 +3,7 @@ name = "covcon"
 description = "Crate to convert between code coverage formats."
 repository = "https://github.com/mhatzl/covcon"
 license = "MIT"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 
 [dependencies]
